@@ -36,6 +36,8 @@ namespace _301273104_rosario_lab1.Commands
 
                 if (success)
                 {
+                    // Clear the field after success
+                    _bucketModel.BucketName = string.Empty;
                     MessageBox.Show("Bucket was successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
@@ -49,5 +51,4 @@ namespace _301273104_rosario_lab1.Commands
             }
         }
     }
-}
 }

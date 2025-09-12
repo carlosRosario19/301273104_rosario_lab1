@@ -17,9 +17,12 @@ namespace _301273104_rosario_lab1.Services
         {
             try
             {
+                // Ensure bucket name is globally unique by appending a short GUID
+                string uniqueBucketName = $"{bucketName}-{Guid.NewGuid().ToString().Substring(0, 8)}".ToLower();
+
                 var request = new PutBucketRequest
                 {
-                    BucketName = bucketName,
+                    BucketName = uniqueBucketName,
                     UseClientRegion = true,
                 };
 

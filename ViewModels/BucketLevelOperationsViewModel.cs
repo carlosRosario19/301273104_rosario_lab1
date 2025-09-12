@@ -15,8 +15,9 @@ namespace _301273104_rosario_lab1.ViewModels
             get => _createBucketModel.BucketName ?? "";
             set
             {
-                if (SetProperty(ref _createBucketModel.BucketName, value))
+                if (_createBucketModel.BucketName != value)
                 {
+                    _createBucketModel.BucketName = value;
                     CanCreateBucket = !string.IsNullOrWhiteSpace(value);
                 }
             }
@@ -46,6 +47,19 @@ namespace _301273104_rosario_lab1.ViewModels
             CreateBucketCommand = createBucketCommand;
             LoadBucketsCommand = loadBucketsCommand;
             CanCreateBucket = false;
+
+            // Subscribe to model property changed
+            _createBucketModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(CreateBucketModel.BucketName))
+                {
+                    // Notify view that view-model property changed
+                    OnPropertyChanged(nameof(BucketName));
+                    CanCreateBucket = !string.IsNullOrWhiteSpace(_createBucketModel.BucketName);
+                }
+            };
         }
+
+
     }
 }

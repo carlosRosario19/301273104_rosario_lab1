@@ -1,7 +1,11 @@
 ﻿using _301273104_rosario_lab1.Factories;
 using _301273104_rosario_lab1.Models;
 using _301273104_rosario_lab1.Services;
+using Amazon;
+using Amazon.S3;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 using System.Windows;
 
 namespace _301273104_rosario_lab1
@@ -17,10 +21,40 @@ namespace _301273104_rosario_lab1
         {
             var services = new ServiceCollection();
 
-            // Register ViewModels
-            services.AddTransient<ViewModels.MainWindowViewModel>();
-            services.AddTransient<ViewModels.BucketLevelOperationsViewModel>();
-            services.AddTransient<ViewModels.ObjectLevelOperationsViewModel>();
+            // 1. Build configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets<App>() // <-- this enables dotnet user-secrets
+                .Build();
+
+            services.AddSingleton<IConfiguration>(configuration);
+
+            // Register IAmazonS3 with credentials from configuration
+            services.AddSingleton<IAmazonS3>(sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+
+                var region = config["AWS:Region"];
+                var accessKey = config["AWS:AccessKey"];
+                var secretKey = config["AWS:SecretKey"];
+
+                return new AmazonS3Client(
+                    accessKey,
+                    secretKey,
+                    RegionEndpoint.GetBySystemName(region)
+                );
+            });
+
+            // Register storage service
+            services.AddSingleton<IStorageService, S3StorageService>();
+
+            // Register Models
+            services.AddSingleton<CreateBucketModel>();
+            services.AddSingleton<BucketListModel>();
+
+            // Register Factories
+            services.AddSingleton<IWindowFactory, WindowFactory>();
 
             // Register Commands
             services.AddTransient<Commands.OpenBucketLevelOperationsCommand>();
@@ -30,20 +64,15 @@ namespace _301273104_rosario_lab1
             services.AddTransient<Commands.CreateBucketCommand>();
             services.AddTransient<Commands.LoadBucketsCommand>();
 
+            // Register ViewModels
+            services.AddTransient<ViewModels.MainWindowViewModel>();
+            services.AddTransient<ViewModels.BucketLevelOperationsViewModel>();
+            services.AddTransient<ViewModels.ObjectLevelOperationsViewModel>();
+
             // Register Views
             services.AddTransient<Views.MainWindow>();
             services.AddTransient<Views.BucketLevelOperationsWindow>();
             services.AddTransient<Views.ObjectLevelOperationsWindow>();
-
-            // Register Models
-            services.AddSingleton<CreateBucketModel>();
-            services.AddSingleton<BucketListModel>();
-
-            // Register Factories
-            services.AddSingleton<IWindowFactory, WindowFactory>();
-
-            // Register storage service
-            services.AddSingleton<IStorageService, S3StorageService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }
