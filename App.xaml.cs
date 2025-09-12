@@ -1,5 +1,6 @@
 ﻿using _301273104_rosario_lab1.Factories;
 using _301273104_rosario_lab1.Models;
+using _301273104_rosario_lab1.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -38,6 +39,9 @@ namespace _301273104_rosario_lab1
 
             // Register Factories
             services.AddSingleton<IWindowFactory, WindowFactory>();
+
+            // Register storage service
+            services.AddSingleton<IStorageService, S3StorageService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }
