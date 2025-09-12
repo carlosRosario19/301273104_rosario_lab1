@@ -7,14 +7,16 @@ namespace _301273104_rosario_lab1.Commands
     public class CreateBucketCommand : CommandBase
     {
         private readonly CreateBucketModel _bucketModel;
+        private readonly LoadBucketsCommand _loadBucketsCommand;
         private readonly IStorageService _storageService;
 
         public CreateBucketCommand(
             CreateBucketModel bucketModel,
-            IStorageService storageService
-            )
+            LoadBucketsCommand loadBucketsCommand,
+            IStorageService storageService)
         {
             _bucketModel = bucketModel;
+            _loadBucketsCommand = loadBucketsCommand;
             _storageService = storageService;
         }
         public override void Execute(object? parameter)
@@ -38,6 +40,8 @@ namespace _301273104_rosario_lab1.Commands
                 {
                     // Clear the field after success
                     _bucketModel.BucketName = string.Empty;
+                    // Refresh the bucket list
+                    _loadBucketsCommand.Execute(null);
                     MessageBox.Show("Bucket was successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else

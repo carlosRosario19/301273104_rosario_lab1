@@ -52,6 +52,7 @@ namespace _301273104_rosario_lab1
             // Register Models
             services.AddSingleton<CreateBucketModel>();
             services.AddSingleton<BucketListModel>();
+            services.AddSingleton<SelectedBucketModel>();
 
             // Register Factories
             services.AddSingleton<IWindowFactory, WindowFactory>();
@@ -63,6 +64,7 @@ namespace _301273104_rosario_lab1
             services.AddTransient<Commands.BackToMainWindowCommand>();
             services.AddTransient<Commands.CreateBucketCommand>();
             services.AddTransient<Commands.LoadBucketsCommand>();
+            services.AddTransient<Commands.DeleteBucketCommand>();
 
             // Register ViewModels
             services.AddTransient<ViewModels.MainWindowViewModel>();

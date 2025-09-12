@@ -7,9 +7,6 @@ namespace _301273104_rosario_lab1.ViewModels
     public class BucketLevelOperationsViewModel : ViewModelBase
     {
         private readonly CreateBucketModel _createBucketModel;
-        public ObservableCollection<DisplayBucketModel> Buckets { get; }
-        private bool _canCreateBucket;
-
         public string BucketName
         {
             get => _createBucketModel.BucketName ?? "";
@@ -22,11 +19,35 @@ namespace _301273104_rosario_lab1.ViewModels
                 }
             }
         }
+        public ObservableCollection<DisplayBucketModel> Buckets { get; }
 
+        private bool _canCreateBucket;
         public bool CanCreateBucket
         {
             get => _canCreateBucket;
             set => SetProperty(ref _canCreateBucket, value);
+        }
+
+        private bool _canDeleteBucket;
+        public bool CanDeleteBucket
+        {
+            get => _canDeleteBucket;
+            set => SetProperty(ref _canDeleteBucket, value);
+        }
+
+        private readonly SelectedBucketModel _selectedBucket;
+        public DisplayBucketModel? SelectedBucket
+        {
+            get => _selectedBucket.Bucket;
+            set
+            {
+                if (_selectedBucket.Bucket != value)
+                {
+                    _selectedBucket.Bucket = value;
+                    OnPropertyChanged(); // Notifies the view
+                    CanDeleteBucket = value != null;
+                }
+            }
         }
 
         public CommandBase BackToMainWindowCommand { get; }
@@ -36,6 +57,7 @@ namespace _301273104_rosario_lab1.ViewModels
         public BucketLevelOperationsViewModel(
             CreateBucketModel createBucketModel,
             BucketListModel bucketListModel,
+            SelectedBucketModel selectedBucketModel,
             BackToMainWindowCommand backToMainWindowCommand,
             CreateBucketCommand createBucketCommand,
             LoadBucketsCommand loadBucketsCommand
@@ -43,6 +65,8 @@ namespace _301273104_rosario_lab1.ViewModels
         {
             _createBucketModel = createBucketModel;
             Buckets = bucketListModel.Buckets;
+            _selectedBucket = selectedBucketModel;
+
             BackToMainWindowCommand = backToMainWindowCommand;
             CreateBucketCommand = createBucketCommand;
             LoadBucketsCommand = loadBucketsCommand;
@@ -56,6 +80,16 @@ namespace _301273104_rosario_lab1.ViewModels
                     // Notify view that view-model property changed
                     OnPropertyChanged(nameof(BucketName));
                     CanCreateBucket = !string.IsNullOrWhiteSpace(_createBucketModel.BucketName);
+                }
+            };
+
+            _selectedBucket.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(SelectedBucketModel.Bucket))
+                {
+                    OnPropertyChanged(nameof(SelectedBucket));
+                    // Enable Delete only if a bucket is selected
+                    CanDeleteBucket = _selectedBucket.Bucket != null;
                 }
             };
         }

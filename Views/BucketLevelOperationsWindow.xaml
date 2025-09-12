@@ -58,7 +58,8 @@
             <Button Content="Delete Bucket"
                     Grid.Row="1" Grid.Column="2"
                     Margin="5"
-                    Width="120"/>
+                    Width="120"
+                    IsEnabled="{Binding CanDeleteBucket}"/>
         </Grid>
 
         <!-- BODY -->
@@ -66,7 +67,8 @@
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   Margin="0 0 0 20"
-                  ItemsSource="{Binding Buckets}">
+                  ItemsSource="{Binding Buckets}"
+                  SelectedItem="{Binding SelectedBucket, Mode=TwoWay}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Bucket Name" Binding="{Binding Name}" Width="*"/>
                 <DataGridTextColumn Header="Creation Date" Binding="{Binding CreationDate, StringFormat=G}" Width="*"/>
