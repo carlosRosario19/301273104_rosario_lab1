@@ -32,5 +32,10 @@ namespace _301273104_rosario_lab1.Services
                 return false;
             }
         }
+
+        public async Task<ListBucketsResponse> GetBuckets()
+        {
+            return await Client.ListBucketsAsync();
+        }
     }
 }

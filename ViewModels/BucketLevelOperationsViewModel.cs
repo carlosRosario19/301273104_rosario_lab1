@@ -1,11 +1,13 @@
 ﻿using _301273104_rosario_lab1.Commands;
 using _301273104_rosario_lab1.Models;
+using System.Collections.ObjectModel;
 
 namespace _301273104_rosario_lab1.ViewModels
 {
     public class BucketLevelOperationsViewModel : ViewModelBase
     {
         private readonly CreateBucketModel _createBucketModel;
+        public ObservableCollection<DisplayBucketModel> Buckets { get; }
         private bool _canCreateBucket;
 
         public string BucketName
@@ -28,16 +30,21 @@ namespace _301273104_rosario_lab1.ViewModels
 
         public CommandBase BackToMainWindowCommand { get; }
         public CommandBase CreateBucketCommand { get; }
+        public CommandBase LoadBucketsCommand { get; }
 
         public BucketLevelOperationsViewModel(
             CreateBucketModel createBucketModel,
+            BucketListModel bucketListModel,
             BackToMainWindowCommand backToMainWindowCommand,
-            CreateBucketCommand createBucketCommand
+            CreateBucketCommand createBucketCommand,
+            LoadBucketsCommand loadBucketsCommand
             )
         {
             _createBucketModel = createBucketModel;
+            Buckets = bucketListModel.Buckets;
             BackToMainWindowCommand = backToMainWindowCommand;
             CreateBucketCommand = createBucketCommand;
+            LoadBucketsCommand = loadBucketsCommand;
             CanCreateBucket = false;
         }
     }
