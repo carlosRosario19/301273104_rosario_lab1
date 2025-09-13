@@ -57,13 +57,16 @@ namespace _301273104_rosario_lab1.ViewModels
 
         public CommandBase BackToMainWindowCommand { get; }
         public CommandBase CreateBucketCommand { get; }
+        public CommandBase DeleteBucketCommand { get; }
 
         public BucketLevelOperationsViewModel(
             InMemoryBucketStore bucketStore,
             CreateBucketModel createBucketModel,
             SelectedBucketModel selectedBucketModel,
             BackToMainWindowCommand backToMainWindowCommand,
-            CreateBucketCommand createBucketCommand)
+            CreateBucketCommand createBucketCommand,
+            DeleteBucketCommand deleteBucketCommand
+            )
         {
             _bucketStore = bucketStore;
             _createBucketModel = createBucketModel;
@@ -71,6 +74,7 @@ namespace _301273104_rosario_lab1.ViewModels
 
             BackToMainWindowCommand = backToMainWindowCommand;
             CreateBucketCommand = createBucketCommand;
+            DeleteBucketCommand = deleteBucketCommand;
             CanCreateBucket = false;
 
             // Build a view of bucket store

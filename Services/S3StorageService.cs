@@ -35,10 +35,79 @@ namespace _301273104_rosario_lab1.Services
                 return false;
             }
         }
-            
-        public async Task<ListBucketsResponse> GetBuckets()
+
+        public async Task<ListBucketsResponse> GetBucketsAync()
         {
             return await Client.ListBucketsAsync();
+        }
+
+        public async Task<bool> DeleteBucketAsync(string bucketName)
+        {
+            try
+            {
+                var request = new DeleteBucketRequest { BucketName = bucketName, };
+
+                await Client.DeleteBucketAsync(request);
+                return true;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Error deleting bucket: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<ListObjectsV2Response> ListObjectsAsync(string bucketName)
+        {
+            try
+            {
+                var request = new ListObjectsV2Request
+                {
+                    BucketName = bucketName,
+                    MaxKeys = 1000 // This can be adjusted or configurable
+                };
+
+                var response = await Client.ListObjectsV2Async(request);
+                return response;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Error listing objects in bucket '{bucketName}': {ex.Message}");
+                throw; // rethrow so caller can handle if needed
+            }
+        }
+
+        public async Task<bool> DeleteObjectsAsync(string bucketName)
+        {
+            // Iterate over the contents of the bucket and delete all objects.
+            var request = new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+            };
+
+            try
+            {
+                ListObjectsV2Response response;
+
+                do
+                {
+                    response = await Client.ListObjectsV2Async(request);
+                    response.S3Objects
+                        .ForEach(async obj => await Client.DeleteObjectAsync(bucketName, obj.Key));
+
+                    // If the response is truncated, set the request ContinuationToken
+                    // from the NextContinuationToken property of the response.
+                    request.ContinuationToken = response.NextContinuationToken;
+                }
+                while (response.IsTruncated ?? false);
+
+                return true;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Error deleting objects: {ex.Message}");
+                return false;
+            }
         }
     }
 }

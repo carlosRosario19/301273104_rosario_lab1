@@ -20,7 +20,7 @@ namespace _301273104_rosario_lab1.Stores
         {
             if (_isLoaded) return; // only load once
 
-            var response = await _storageService.GetBuckets();
+            var response = await _storageService.GetBucketsAync();
 
             Buckets.Clear();
             foreach (var bucket in response.Buckets)
@@ -39,7 +39,7 @@ namespace _301273104_rosario_lab1.Stores
 
         public async Task RefreshBucketsAsync()
         {
-            var response = await _storageService.GetBuckets();
+            var response = await _storageService.GetBucketsAync();
 
             Buckets.Clear();
             foreach (var bucket in response.Buckets)

@@ -55,7 +55,6 @@ namespace _301273104_rosario_lab1
 
             // Register Models
             services.AddSingleton<CreateBucketModel>();
-            services.AddSingleton<BucketListModel>();
             services.AddSingleton<SelectedBucketModel>();
 
             // Register Factories
