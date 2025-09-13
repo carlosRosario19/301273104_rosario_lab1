@@ -67,11 +67,15 @@
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   Margin="0 0 0 20"
-                  ItemsSource="{Binding Buckets}"
+                  ItemsSource="{Binding BucketsView}"
                   SelectedItem="{Binding SelectedBucket, Mode=TwoWay}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bucket Name" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn Header="Creation Date" Binding="{Binding CreationDate, StringFormat=G}" Width="*"/>
+                <DataGridTextColumn Header="Bucket Name" 
+                                    Binding="{Binding BucketName}" 
+                                    Width="*"/>
+                <DataGridTextColumn Header="Creation Date" 
+                                    Binding="{Binding CreationDate, StringFormat=G}" 
+                                    Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 

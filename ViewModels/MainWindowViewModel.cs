@@ -7,15 +7,18 @@ namespace _301273104_rosario_lab1.ViewModels
         public CommandBase OpenBucketLevelOperationsCommand { get; }
         public CommandBase OpenObjectLevelOperationsCommand { get; }
         public CommandBase ExitCommand { get; }
+        public CommandBase LoadBucketsCommands { get; }
 
         public MainWindowViewModel(
             OpenBucketLevelOperationsCommand openBucketLevelOperationsCommand,
             OpenObjectLevelOperationsCommand openObjectLevelOperationsCommand,
-            ExitCommand exitCommand)
+            ExitCommand exitCommand,
+            LoadBucketsCommand loadBucketsCommand)
         {
             OpenBucketLevelOperationsCommand = openBucketLevelOperationsCommand;
             OpenObjectLevelOperationsCommand = openObjectLevelOperationsCommand;
             ExitCommand = exitCommand;
+            LoadBucketsCommands = loadBucketsCommand;
         }
     }
 }

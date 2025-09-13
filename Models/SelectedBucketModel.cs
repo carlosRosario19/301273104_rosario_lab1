@@ -4,9 +4,9 @@ namespace _301273104_rosario_lab1.Models
 {
     public class SelectedBucketModel : INotifyPropertyChanged
     {
-        private DisplayBucketModel? _bucket;
+        private BucketModel? _bucket;
 
-        public DisplayBucketModel? Bucket
+        public BucketModel? Bucket
         {
             get => _bucket;
             set

@@ -3,15 +3,14 @@ using System.Windows;
 
 namespace _301273104_rosario_lab1.Commands
 {
-    public class LoadBucketsCommand : CommandBase
+    public class RefreshBucketsCommand : CommandBase
     {
         private readonly InMemoryBucketStore _bucketStore;
 
-        public LoadBucketsCommand(InMemoryBucketStore bucketStore)
+        public RefreshBucketsCommand(InMemoryBucketStore bucketStore)
         {
             _bucketStore = bucketStore;
         }
-
         public override void Execute(object? parameter)
         {
             _ = ExecuteAsync();
@@ -21,14 +20,14 @@ namespace _301273104_rosario_lab1.Commands
         {
             try
             {
-                await _bucketStore.LoadBucketsAsync();
+                await _bucketStore.RefreshBucketsAsync();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Failed to load buckets: {ex.Message}", 
-                    "Error", 
-                    MessageBoxButton.OK, 
+                    $"Failed to refresh buckets: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
         }

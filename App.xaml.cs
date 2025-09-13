@@ -1,6 +1,7 @@
 ﻿using _301273104_rosario_lab1.Factories;
 using _301273104_rosario_lab1.Models;
 using _301273104_rosario_lab1.Services;
+using _301273104_rosario_lab1.Stores;
 using Amazon;
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
@@ -49,6 +50,9 @@ namespace _301273104_rosario_lab1
             // Register storage service
             services.AddSingleton<IStorageService, S3StorageService>();
 
+            // Register Stores
+            services.AddSingleton<InMemoryBucketStore>();
+
             // Register Models
             services.AddSingleton<CreateBucketModel>();
             services.AddSingleton<BucketListModel>();
@@ -65,6 +69,7 @@ namespace _301273104_rosario_lab1
             services.AddTransient<Commands.CreateBucketCommand>();
             services.AddTransient<Commands.LoadBucketsCommand>();
             services.AddTransient<Commands.DeleteBucketCommand>();
+            services.AddTransient<Commands.RefreshBucketsCommand>();
 
             // Register ViewModels
             services.AddTransient<ViewModels.MainWindowViewModel>();

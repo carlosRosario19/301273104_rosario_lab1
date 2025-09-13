@@ -12,13 +12,6 @@ namespace _301273104_rosario_lab1.Views
         {
             InitializeComponent();
             DataContext = viewModel;
-
-            // Run LoadBucketsCommand when the window finishes loading
-            Loaded += (_, __) =>
-            {
-                if (viewModel.LoadBucketsCommand.CanExecute(null))
-                    viewModel.LoadBucketsCommand.Execute(null);
-            };
         }
     }
 }

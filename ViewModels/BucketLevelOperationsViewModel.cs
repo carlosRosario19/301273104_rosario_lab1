@@ -1,12 +1,19 @@
 ﻿using _301273104_rosario_lab1.Commands;
 using _301273104_rosario_lab1.Models;
-using System.Collections.ObjectModel;
+using _301273104_rosario_lab1.Stores;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace _301273104_rosario_lab1.ViewModels
 {
     public class BucketLevelOperationsViewModel : ViewModelBase
     {
+        private readonly InMemoryBucketStore _bucketStore;
         private readonly CreateBucketModel _createBucketModel;
+        private readonly SelectedBucketModel _selectedBucket;
+
+        public ICollectionView BucketsView { get; }
+
         public string BucketName
         {
             get => _createBucketModel.BucketName ?? "";
@@ -19,7 +26,6 @@ namespace _301273104_rosario_lab1.ViewModels
                 }
             }
         }
-        public ObservableCollection<DisplayBucketModel> Buckets { get; }
 
         private bool _canCreateBucket;
         public bool CanCreateBucket
@@ -35,8 +41,7 @@ namespace _301273104_rosario_lab1.ViewModels
             set => SetProperty(ref _canDeleteBucket, value);
         }
 
-        private readonly SelectedBucketModel _selectedBucket;
-        public DisplayBucketModel? SelectedBucket
+        public BucketModel? SelectedBucket
         {
             get => _selectedBucket.Bucket;
             set
@@ -52,25 +57,24 @@ namespace _301273104_rosario_lab1.ViewModels
 
         public CommandBase BackToMainWindowCommand { get; }
         public CommandBase CreateBucketCommand { get; }
-        public CommandBase LoadBucketsCommand { get; }
 
         public BucketLevelOperationsViewModel(
+            InMemoryBucketStore bucketStore,
             CreateBucketModel createBucketModel,
-            BucketListModel bucketListModel,
             SelectedBucketModel selectedBucketModel,
             BackToMainWindowCommand backToMainWindowCommand,
-            CreateBucketCommand createBucketCommand,
-            LoadBucketsCommand loadBucketsCommand
-            )
+            CreateBucketCommand createBucketCommand)
         {
+            _bucketStore = bucketStore;
             _createBucketModel = createBucketModel;
-            Buckets = bucketListModel.Buckets;
             _selectedBucket = selectedBucketModel;
 
             BackToMainWindowCommand = backToMainWindowCommand;
             CreateBucketCommand = createBucketCommand;
-            LoadBucketsCommand = loadBucketsCommand;
             CanCreateBucket = false;
+
+            // Build a view of bucket store
+            BucketsView = CollectionViewSource.GetDefaultView(_bucketStore.Buckets);
 
             // Subscribe to model property changed
             _createBucketModel.PropertyChanged += (s, e) =>
@@ -93,7 +97,5 @@ namespace _301273104_rosario_lab1.ViewModels
                 }
             };
         }
-
-
     }
 }
