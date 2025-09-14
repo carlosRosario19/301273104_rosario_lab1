@@ -1,6 +1,7 @@
 ﻿
 using Amazon.S3;
 using Amazon.S3.Model;
+using System.Windows.Media.Animation;
 
 namespace _301273104_rosario_lab1.Services
 {
@@ -107,6 +108,24 @@ namespace _301273104_rosario_lab1.Services
             {
                 Console.WriteLine($"Error deleting objects: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task DeleteObjectAsync(string bucketName, string objectName)
+        {
+            try
+            {
+                var deleteObjectRequest = new DeleteObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = objectName,
+                };
+
+                await Client.DeleteObjectAsync(deleteObjectRequest);
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Error encountered on server. Message:'{ex.Message}' when deleting an object.");
             }
         }
     }

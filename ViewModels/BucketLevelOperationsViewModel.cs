@@ -91,6 +91,7 @@ namespace _301273104_rosario_lab1.ViewModels
                 }
             };
 
+            // Subscribe to model property changed
             _selectedBucket.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(SelectedBucketModel.Bucket))
