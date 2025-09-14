@@ -42,7 +42,6 @@ namespace _301273104_rosario_lab1.Commands
                     _bucketModel.BucketName = string.Empty;
                     // Refresh the bucket list
                     _refreshBucketsCommand.Execute(null);
-                    MessageBox.Show("Bucket was successfully created.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {

@@ -44,7 +44,7 @@
                      Grid.Row="0" Grid.Column="1"
                      Margin="5"
                      Width="300"
-                     Text="{Binding BucketName, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding BucketName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
             <!-- Create Bucket Button -->
             <Button Content="Create Bucket"

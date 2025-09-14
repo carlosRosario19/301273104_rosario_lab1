@@ -6,12 +6,12 @@ namespace _301273104_rosario_lab1.Commands
 {
     public class DeleteBucketCommand : CommandBase
     {
-        private readonly SelectedBucketModel _bucketModel;
+        private readonly SelectedBucketInGridModel  _bucketModel;
         private readonly RefreshBucketsCommand _refreshBucketsCommand;
         private readonly IStorageService _storageService;
 
         public DeleteBucketCommand(
-            SelectedBucketModel bucketModel,
+            SelectedBucketInGridModel  bucketModel,
             RefreshBucketsCommand refreshBucketsCommand,
             IStorageService storageService
             )

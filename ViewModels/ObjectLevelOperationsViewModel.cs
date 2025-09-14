@@ -8,10 +8,11 @@ namespace _301273104_rosario_lab1.ViewModels
 {
     public class ObjectLevelOperationsViewModel : ViewModelBase
     {
-        public readonly InMemoryBucketStore _bucketStore;
-        public readonly ObjectList _objectList;
-        public readonly SelectedBucketModel _selectedBucket;
-        public readonly SelectedObjectModel _selectedObject;
+        private readonly InMemoryBucketStore _bucketStore;
+        private readonly ObjectList _objectList;
+        private readonly SelectedBucketInComboModel _selectedBucket;
+        private readonly SelectedObjectModel _selectedObject;
+        private readonly UploadObjectModel _uploadObjectModel;
 
         public BucketModel? SelectedBucket
         {
@@ -28,6 +29,10 @@ namespace _301273104_rosario_lab1.ViewModels
                     {
                         ListObjectsCommand.Execute(null);
                     }
+
+                    // Update UploadObjectModel bucket name
+                    _uploadObjectModel.BucketName = value?.BucketName ?? string.Empty;
+                    CanBrowseObject = value != null;
                 }
             }
         }
@@ -47,6 +52,8 @@ namespace _301273104_rosario_lab1.ViewModels
             }
         }
 
+        public UploadObjectModel UploadObject => _uploadObjectModel;
+
         private bool _canDeleteObject;
         public bool CanDeleteObject
         {
@@ -61,6 +68,20 @@ namespace _301273104_rosario_lab1.ViewModels
             set => SetProperty(ref _canDownloadObject, value);
         }
 
+        private bool _canUploadObject;
+        public bool CanUploadObject
+        {
+            get => _canUploadObject;
+            set => SetProperty(ref _canUploadObject, value);
+        }
+
+        private bool _canBrowseObject;
+        public bool CanBrowseObject
+        {
+            get => _canBrowseObject;
+            set => SetProperty(ref _canBrowseObject, value);
+        }
+
         public ICollectionView BucketsView { get; }
         public ICollectionView ObjectsView { get; }
 
@@ -68,26 +89,34 @@ namespace _301273104_rosario_lab1.ViewModels
         public CommandBase ListObjectsCommand { get; }
         public CommandBase DeleteObjectCommand { get; }
         public CommandBase DownloadObjectCommand { get; }
+        public CommandBase UploadObjectCommand { get; }
+        public CommandBase BrowseObjectCommand { get; }
         public CommandBase BackToMainWindowCommand { get; }
         
         public ObjectLevelOperationsViewModel(
             InMemoryBucketStore bucketStore,
             ObjectList objectList,
-            SelectedBucketModel selectedBucket,
+            SelectedBucketInComboModel selectedBucket,
             SelectedObjectModel selectedObject,
+            UploadObjectModel uploadObjectModel,
             ListObjectsCommand listObjectsCommand,
             DeleteObjectCommand deleteObjectCommand,
             DownloadObjectCommand downloadObjectCommand,
+            UploadObjectCommand uploadObjectCommand,
+            BrowseObjectCommand browseObjectCommand,
             BackToMainWindowCommand backToMainWindowCommand)
         {
             _bucketStore = bucketStore;
             _objectList = objectList;
             _selectedBucket = selectedBucket;
             _selectedObject = selectedObject;
+            _uploadObjectModel = uploadObjectModel;
 
             ListObjectsCommand = listObjectsCommand;
             DeleteObjectCommand = deleteObjectCommand;
             DownloadObjectCommand = downloadObjectCommand;
+            UploadObjectCommand = uploadObjectCommand;
+            BrowseObjectCommand = browseObjectCommand;
             BackToMainWindowCommand = backToMainWindowCommand;
 
             // Build a view of bucket store
@@ -108,6 +137,30 @@ namespace _301273104_rosario_lab1.ViewModels
                 }
             };
 
+            // Subscribe to upload object model changes
+            _uploadObjectModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(UploadObjectModel.FilePath) ||
+                    e.PropertyName == nameof(UploadObjectModel.ObjectName) ||
+                    e.PropertyName == nameof(UploadObjectModel.BucketName))
+                {
+                    CanUploadObject =
+                        !string.IsNullOrWhiteSpace(_uploadObjectModel.FilePath) &&
+                        !string.IsNullOrWhiteSpace(_uploadObjectModel.ObjectName) &&
+                        !string.IsNullOrWhiteSpace(_uploadObjectModel.BucketName);
+                }
+            };
+
+            // Subscribe to model property changed
+            _selectedBucket.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(SelectedBucketInGridModel.Bucket))
+                {
+                    OnPropertyChanged(nameof(SelectedBucket));
+                    // Enable Delete only if a bucket is selected
+                    CanBrowseObject = _selectedBucket.Bucket != null;
+                }
+            };
         }
     }
 }

@@ -8,12 +8,12 @@ namespace _301273104_rosario_lab1.Commands
     public class ListObjectsCommand : CommandBase
     {
         public readonly ObjectList _objectList;
-        private readonly SelectedBucketModel _selectedBucket;
+        private readonly SelectedBucketInComboModel _selectedBucket;
         private readonly IStorageService _storageService;
 
         public ListObjectsCommand(
             ObjectList objectList,
-            SelectedBucketModel selectedBucket,
+            SelectedBucketInComboModel selectedBucket,
             IStorageService storageService)
         {
             _objectList = objectList;
@@ -32,12 +32,6 @@ namespace _301273104_rosario_lab1.Commands
             {
                 if (_selectedBucket.Bucket == null)
                 {
-                    MessageBox.Show(
-                        "No bucket selected. Please choose a bucket.",
-                        "Validation Error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning
-                    );
                     return;
                 }
 

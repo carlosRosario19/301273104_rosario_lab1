@@ -2,7 +2,7 @@
 
 namespace _301273104_rosario_lab1.Models
 {
-    public class SelectedBucketModel : INotifyPropertyChanged
+    public class SelectedBucketInComboModel : INotifyPropertyChanged
     {
         private BucketModel? _bucket;
 
@@ -18,6 +18,11 @@ namespace _301273104_rosario_lab1.Models
                 }
             }
         }
+        public void Clear()
+        {
+            Bucket = null; // automatically fires PropertyChanged
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

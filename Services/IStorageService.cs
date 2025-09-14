@@ -11,5 +11,6 @@ namespace _301273104_rosario_lab1.Services
         Task<bool> DeleteObjectsAsync(string bucketName);
         Task DeleteObjectAsync(string bucketName, string objectName);
         Task<bool> DownloadObjectAsync(string bucketName, string objectName);
+        Task<bool> UploadObjectAsync(string bucketName, string objectName, string filePath);
     }
 }

@@ -167,5 +167,26 @@ namespace _301273104_rosario_lab1.Services
                 return false;
             }
         }
+
+        public async Task<bool> UploadObjectAsync(string bucketName, string objectName, string filePath)
+        {
+            try
+            {
+                var request = new PutObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = objectName,
+                    FilePath = filePath,
+                };
+
+                await Client.PutObjectAsync(request);
+                return true;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Could not upload {objectName} to {bucketName}: '{ex.Message}'");
+                return false;
+            }
+        }
     }
 }

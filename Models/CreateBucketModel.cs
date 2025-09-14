@@ -18,6 +18,11 @@ namespace _301273104_rosario_lab1.Models
             }
         }
 
+        public void Clear()
+        {
+            BucketName = string.Empty;
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

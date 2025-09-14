@@ -10,7 +10,7 @@ namespace _301273104_rosario_lab1.ViewModels
     {
         private readonly InMemoryBucketStore _bucketStore;
         private readonly CreateBucketModel _createBucketModel;
-        private readonly SelectedBucketModel _selectedBucket;
+        private readonly SelectedBucketInGridModel _selectedBucket;
 
         public ICollectionView BucketsView { get; }
 
@@ -62,7 +62,7 @@ namespace _301273104_rosario_lab1.ViewModels
         public BucketLevelOperationsViewModel(
             InMemoryBucketStore bucketStore,
             CreateBucketModel createBucketModel,
-            SelectedBucketModel selectedBucketModel,
+            SelectedBucketInGridModel selectedBucketModel,
             BackToMainWindowCommand backToMainWindowCommand,
             CreateBucketCommand createBucketCommand,
             DeleteBucketCommand deleteBucketCommand
@@ -94,7 +94,7 @@ namespace _301273104_rosario_lab1.ViewModels
             // Subscribe to model property changed
             _selectedBucket.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(SelectedBucketModel.Bucket))
+                if (e.PropertyName == nameof(SelectedBucketInGridModel .Bucket))
                 {
                     OnPropertyChanged(nameof(SelectedBucket));
                     // Enable Delete only if a bucket is selected
