@@ -42,6 +42,7 @@ namespace _301273104_rosario_lab1.ViewModels
                     _selectedObject.Object = value;
                     OnPropertyChanged(); // Notifies the view
                     CanDeleteObject = value != null;
+                    CanDownloadObject = value != null;
                 }
             }
         }
@@ -53,14 +54,22 @@ namespace _301273104_rosario_lab1.ViewModels
             set => SetProperty(ref _canDeleteObject, value);
         }
 
+        private bool _canDownloadObject;
+        public bool CanDownloadObject
+        {
+            get => _canDownloadObject;
+            set => SetProperty(ref _canDownloadObject, value);
+        }
+
         public ICollectionView BucketsView { get; }
         public ICollectionView ObjectsView { get; }
 
 
         public CommandBase ListObjectsCommand { get; }
         public CommandBase DeleteObjectCommand { get; }
+        public CommandBase DownloadObjectCommand { get; }
         public CommandBase BackToMainWindowCommand { get; }
-
+        
         public ObjectLevelOperationsViewModel(
             InMemoryBucketStore bucketStore,
             ObjectList objectList,
@@ -68,6 +77,7 @@ namespace _301273104_rosario_lab1.ViewModels
             SelectedObjectModel selectedObject,
             ListObjectsCommand listObjectsCommand,
             DeleteObjectCommand deleteObjectCommand,
+            DownloadObjectCommand downloadObjectCommand,
             BackToMainWindowCommand backToMainWindowCommand)
         {
             _bucketStore = bucketStore;
@@ -77,6 +87,7 @@ namespace _301273104_rosario_lab1.ViewModels
 
             ListObjectsCommand = listObjectsCommand;
             DeleteObjectCommand = deleteObjectCommand;
+            DownloadObjectCommand = downloadObjectCommand;
             BackToMainWindowCommand = backToMainWindowCommand;
 
             // Build a view of bucket store
@@ -93,8 +104,10 @@ namespace _301273104_rosario_lab1.ViewModels
                     OnPropertyChanged(nameof(SelectedObject));
                     // Enable Delete only if an object is selected
                     CanDeleteObject = _selectedObject.Object != null;
+                    CanDownloadObject = _selectedObject.Object != null;
                 }
             };
+
         }
     }
 }

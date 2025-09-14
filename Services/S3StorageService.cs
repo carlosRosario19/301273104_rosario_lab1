@@ -1,7 +1,7 @@
 ﻿
 using Amazon.S3;
 using Amazon.S3.Model;
-using System.Windows.Media.Animation;
+using Microsoft.Win32;
 
 namespace _301273104_rosario_lab1.Services
 {
@@ -126,6 +126,45 @@ namespace _301273104_rosario_lab1.Services
             catch (AmazonS3Exception ex)
             {
                 Console.WriteLine($"Error encountered on server. Message:'{ex.Message}' when deleting an object.");
+            }
+        }
+
+        public async Task<bool> DownloadObjectAsync(string bucketName, string objectName)
+        {
+            try
+            {
+                // Let the user pick where to save the file
+                var dialog = new SaveFileDialog
+                {
+                    FileName = objectName,                 // Default file name
+                    Filter = "All files (*.*)|*.*",        // Allow all file types
+                    Title = "Save S3 Object"
+                };
+
+                if (dialog.ShowDialog() != true)
+                {
+                    // User canceled the dialog
+                    return false;
+                }
+
+                // Prepare request
+                var request = new GetObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = objectName,
+                };
+
+                using GetObjectResponse response = await Client.GetObjectAsync(request);
+
+                // Write to the chosen file path
+                await response.WriteResponseStreamToFileAsync(dialog.FileName, false, CancellationToken.None);
+
+                return response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine($"Error saving {objectName}: {ex.Message}");
+                return false;
             }
         }
     }

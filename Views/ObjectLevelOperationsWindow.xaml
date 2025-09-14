@@ -108,7 +108,9 @@
                         Grid.Row="1"
                         Margin="5"
                         Height="40"
-                        Width="150"/>
+                        Width="150"
+                        IsEnabled="{Binding CanDownloadObject}"
+                        Command="{Binding DownloadObjectCommand}"/>
 
                 <Button Content="Delete" 
                         Grid.Row="2"

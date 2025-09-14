@@ -73,6 +73,7 @@ namespace _301273104_rosario_lab1
             services.AddTransient<Commands.RefreshBucketsCommand>();
             services.AddTransient<Commands.ListObjectsCommand>();
             services.AddTransient<Commands.DeleteObjectCommand>();
+            services.AddTransient<Commands.DownloadObjectCommand>();
 
             // Register ViewModels
             services.AddTransient<ViewModels.MainWindowViewModel>();

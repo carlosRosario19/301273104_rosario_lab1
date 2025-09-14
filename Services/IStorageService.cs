@@ -1,5 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
+﻿using Amazon.S3.Model;
 
 namespace _301273104_rosario_lab1.Services
 {
@@ -11,5 +10,6 @@ namespace _301273104_rosario_lab1.Services
         Task<ListObjectsV2Response> ListObjectsAsync(string bucketName);
         Task<bool> DeleteObjectsAsync(string bucketName);
         Task DeleteObjectAsync(string bucketName, string objectName);
+        Task<bool> DownloadObjectAsync(string bucketName, string objectName);
     }
 }
