@@ -23,15 +23,19 @@ namespace _301273104_rosario_lab1.Stores
             var response = await _storageService.GetBucketsAync();
 
             Buckets.Clear();
-            foreach (var bucket in response.Buckets)
+
+            if (response?.Buckets != null && response.Buckets.Any())
             {
-                Buckets.Add(new BucketModel
+                foreach (var bucket in response.Buckets)
                 {
-                    BucketArn = bucket.BucketArn,
-                    BucketName = bucket.BucketName,
-                    BucketRegion = bucket.BucketRegion,
-                    CreationDate = bucket.CreationDate
-                });
+                    Buckets.Add(new BucketModel
+                    {
+                        BucketArn = bucket.BucketArn,
+                        BucketName = bucket.BucketName,
+                        BucketRegion = bucket.BucketRegion,
+                        CreationDate = bucket.CreationDate
+                    });
+                }
             }
 
             _isLoaded = true;
@@ -42,16 +46,21 @@ namespace _301273104_rosario_lab1.Stores
             var response = await _storageService.GetBucketsAync();
 
             Buckets.Clear();
-            foreach (var bucket in response.Buckets)
+
+            if (response?.Buckets != null && response.Buckets.Any())
             {
-                Buckets.Add(new BucketModel
+                foreach (var bucket in response.Buckets)
                 {
-                    BucketArn = bucket.BucketArn,
-                    BucketName = bucket.BucketName,
-                    BucketRegion = bucket.BucketRegion,
-                    CreationDate = bucket.CreationDate
-                });
+                    Buckets.Add(new BucketModel
+                    {
+                        BucketArn = bucket.BucketArn,
+                        BucketName = bucket.BucketName,
+                        BucketRegion = bucket.BucketRegion,
+                        CreationDate = bucket.CreationDate
+                    });
+                }
             }
+
             _isLoaded = true;
         }
     }

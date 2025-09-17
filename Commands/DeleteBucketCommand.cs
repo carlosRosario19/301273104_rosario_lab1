@@ -81,12 +81,6 @@ namespace _301273104_rosario_lab1.Commands
                 if (deleted)
                 {
                     _refreshBucketsCommand.Execute(null);
-                    MessageBox.Show(
-                        $"Bucket '{_bucketModel.Bucket.BucketName}' was successfully deleted.",
-                        "Success",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
                 }
                 else
                 {
